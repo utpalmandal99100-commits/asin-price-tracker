@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Price Tracker</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <h1>Price Tracker</h1>
+      <div class="actions">
+        <button id="refresh-all" class="btn">Refresh all</button>
+        <a id="export" class="btn btn-primary" href="/api/export.xlsx">Download Excel</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <form id="add-form" class="add-form">
+        <input id="add-input" type="text" autocomplete="off"
+               placeholder="Paste a product URL, or an ASIN / Myntra Style ID / Nykaa or Tata CLiQ Product ID" required>
+        <select id="add-platform" aria-label="Platform">
+          <option value="">Auto-detect</option>
+          <option value="amazon">Amazon India</option>
+          <option value="myntra">Myntra</option>
+          <option value="nykaa">Nykaa</option>
+          <option value="tatacliq">Tata CLiQ</option>
+        </select>
+        <button class="btn btn-primary" type="submit">Track</button>
+      </form>
+      <div id="add-message" class="message" hidden></div>
+      <div id="sources" class="sources"></div>
+    </section>
+
+    <div id="products"></div>
+    <p id="empty" class="empty" hidden>No products tracked yet. Add one above.</p>
+  </main>
+
+  <dialog id="manual-dialog">
+    <form id="manual-form" method="dialog">
+      <h2>Enter verified price</h2>
+      <p class="muted" id="manual-help"></p>
+      <a id="manual-link" target="_blank" rel="noopener" class="link">Open product page ↗</a>
+      <label>Product name <input name="title"></label>
+      <div class="row2">
+        <label>Brand <input name="brand"></label>
+        <label>Variant (size, shade, pack) <input name="variant"></label>
+      </div>
+      <div class="row2">
+        <label>MRP (₹) <input name="mrp" inputmode="decimal"></label>
+        <label>Current selling price (₹) <input name="price" inputmode="decimal"></label>
+      </div>
+      <label class="check"><input type="checkbox" name="unavailable"> Out of stock / not available</label>
+      <label>Note (optional) <input name="note" placeholder="e.g. size M, seller name"></label>
+      <div id="manual-error" class="message error" hidden></div>
+      <div class="dialog-actions">
+        <button type="button" class="btn" id="manual-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" value="save">Save as verified now</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="candidates-dialog">
+    <div>
+      <h2>Amazon India matches</h2>
+      <p class="muted">Found with the Amazon Creators API. Pick the exact same product and variant.</p>
+      <div id="candidates-list"></div>
+      <div class="dialog-actions"><button class="btn" id="candidates-close">Close</button></div>
+    </div>
+  </dialog>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
